@@ -14,7 +14,7 @@ from os import (path, environ, getloadavg, getenv)
 from curses import wrapper
 
 
-__VERSION__ = '0.5.5'
+__VERSION__ = '0.5.6'
 
 """\
 Simple Iota IRI Node Monitor
@@ -117,6 +117,9 @@ def parse_args():
 
     parser.add_argument("-P", "--password", type=str,
                         help="IRI Password if required.")
+
+    parser.add_argument("-d", "--show-domains", action='store_true',
+                        help="Display domain names.")
 
     parser.add_argument("-s", "--sort", type=int,
                         help="Sort column # (-# for reverse sorting)")
@@ -332,6 +335,7 @@ class IriTop:
         self.sortorder = None
         self.mss_0 = ""
         self.prev_ms_start = 0
+        self.show_domains = args.show_domains
 
         # Initiate column sort
         if args.sort:
@@ -387,6 +391,10 @@ class IriTop:
                 random.seed(self.randSeed)
 
                 val = self.term.inkey(timeout=self.blink_delay)
+
+                # Toggle domain names
+                if val.lower() == 'n':
+                    self.show_domains = not self.show_domains
 
                 # Sort mode detection
                 if val.lower() == 's':
@@ -738,8 +746,13 @@ class IriTop:
                       column_width, height):
         global ITER
 
-        neighbor['addr'] = self.showAddress(neighbor['connectionType'] +
-                                            "://" + neighbor['address'])
+        if self.show_domains is True and 'domain' in neighbor:
+            # Domain doesn't contain port, therefore has to be appended
+            _address = neighbor['domain'] + ':' + neighbor['address'].split(':')[1]
+        else:
+            _address = neighbor['address']
+
+        neighbor['addr'] = self.showAddress(neighbor['connectionType'] + "://" + _address)
 
         # Create display string
         for txkey in self.txkeys[1:]:
