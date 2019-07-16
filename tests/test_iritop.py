@@ -158,7 +158,8 @@ class TestFetchData(unittest.TestCase):
             'test': False,  # Remove?
             'password': 'secret',
             'username': 'nobody',
-            'sort': 3
+            'sort': 3,
+            'show_domains': False
         }
 
         """ Get free port and set node address """
@@ -280,6 +281,8 @@ class Neighbor:
     def __init__(self, count):
         self.neighbor_data = {
             "address": "someneighbor%d:%d" % (count, random.randint(21600, 25600)),
+            "domain": "testing.iota%d.io" % (count),
+            "connected": True,
             "connectionType": self.protocol[random.randint(0, 1)],
             "numberOfAllTransactions": random.randint(100000, 200000),
             "numberOfInvalidTransactions": random.randint(0, 3),
