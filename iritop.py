@@ -748,11 +748,13 @@ class IriTop:
 
         if self.show_domains is True and 'domain' in neighbor:
             # Domain doesn't contain port, therefore has to be appended
-            _address = neighbor['domain'] + ':' + neighbor['address'].split(':')[1]
+            _address = neighbor['domain'] + ':' \
+                                          + neighbor['address'].split(':')[1]
         else:
             _address = neighbor['address']
 
-        neighbor['addr'] = self.showAddress(neighbor['connectionType'] + "://" + _address)
+        neighbor['addr'] = self.showAddress(neighbor['connectionType']
+                                            + "://" + _address)
 
         # Create display string
         for txkey in self.txkeys[1:]:
