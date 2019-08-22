@@ -295,6 +295,7 @@ class Neighbor:
     def _increment_data(self):
         self.neighbor_data = {
             "address": self.neighbor_data['address'],
+            "domain": self.neighbor_data['domain'],
             "connectionType": self.neighbor_data['connectionType'],
             "numberOfAllTransactions": random.randint(
                 self.neighbor_data['numberOfAllTransactions'] + 10,

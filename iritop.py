@@ -459,6 +459,8 @@ class IriTop:
                     tlast = int(time.time())
 
                     for neighbor in neighbors:
+                        if 'address' not in neighbor:
+                            continue
                         for txkey in self.txkeys[1:]:
                             if txkey['key'] not in neighbor:
                                 neighbor[txkey['key']] = 0
@@ -468,6 +470,8 @@ class IriTop:
                     # Keep history of tx
                     tx_history = {}
                     for neighbor in neighbors:
+                        if 'address' not in neighbor:
+                            continue
                         for txkey in self.txkeys[1:]:
                             self.historizer(txkey['keyshort'],
                                             txkey['key'],
@@ -480,6 +484,8 @@ class IriTop:
 
                 if val.lower() == 'b':
                     for neighbor in neighbors:
+                        if 'address' not in neighbor:
+                            continue
                         for txkey in self.txkeys[1:]:
                             self.baseline[self.getBaselineKey(neighbor,
                                           txkey['keyshort'])] = \
@@ -498,6 +504,8 @@ class IriTop:
                       self.term.black_on_cyan(s.rjust(6)))
 
                 for neighbor in neighbors:
+                    if 'address' not in neighbor:
+                        continue
                     for txkey in self.txkeys[1:]:
                         key = self.getBaselineKey(neighbor, txkey['keyshort'])
                         if key not in self.baseline:
@@ -721,6 +729,8 @@ class IriTop:
 
         # Show Neighbors
         for neighbor in ordered_neighbors:
+            if 'address' not in neighbor:
+                continue
             self.show_neighbor(row, neighbor, cwl, cw, height)
             row += 1
 
@@ -733,6 +743,7 @@ class IriTop:
                     "Q to exit - "
                     "B to reset tx to a zero baseline - "
                     "O to obscure addresses - "
+                    "N to toggle domain names - "
                     "S# to sort column".ljust(width)))
 
         ITER += 1
