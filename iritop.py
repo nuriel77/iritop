@@ -367,6 +367,11 @@ class IriTop:
             return True
         return False
 
+    def _missing_address(self, neighbor):
+        if 'address' not in neighbor or neighbor['address'] == "":
+            return True
+        return False
+
     def run(self, stdscr):
 
         """ Clear the screen on start """
@@ -459,7 +464,7 @@ class IriTop:
                     tlast = int(time.time())
 
                     for neighbor in neighbors:
-                        if 'address' not in neighbor:
+                        if self._missing_address(neighbor):
                             continue
                         for txkey in self.txkeys[1:]:
                             if txkey['key'] not in neighbor:
@@ -470,7 +475,7 @@ class IriTop:
                     # Keep history of tx
                     tx_history = {}
                     for neighbor in neighbors:
-                        if 'address' not in neighbor:
+                        if self._missing_address(neighbor):
                             continue
                         for txkey in self.txkeys[1:]:
                             self.historizer(txkey['keyshort'],
@@ -484,7 +489,7 @@ class IriTop:
 
                 if val.lower() == 'b':
                     for neighbor in neighbors:
-                        if 'address' not in neighbor:
+                        if self._missing_address(neighbor):
                             continue
                         for txkey in self.txkeys[1:]:
                             self.baseline[self.getBaselineKey(neighbor,
@@ -504,7 +509,7 @@ class IriTop:
                       self.term.black_on_cyan(s.rjust(6)))
 
                 for neighbor in neighbors:
-                    if 'address' not in neighbor:
+                    if self._missing_address(neighbor):
                         continue
                     for txkey in self.txkeys[1:]:
                         key = self.getBaselineKey(neighbor, txkey['keyshort'])
@@ -729,7 +734,7 @@ class IriTop:
 
         # Show Neighbors
         for neighbor in ordered_neighbors:
-            if 'address' not in neighbor:
+            if self._missing_address(neighbor):
                 continue
             self.show_neighbor(row, neighbor, cwl, cw, height)
             row += 1
